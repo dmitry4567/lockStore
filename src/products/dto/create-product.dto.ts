@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateProductDto {
   @ApiProperty({
@@ -13,15 +14,26 @@ export class CreateProductDto {
   })
   image: Express.Multer.File;
 
+  @ApiProperty()
+  @IsNotEmpty()
   @IsString()
-  title: string = 'Название акции';
+  title: string;
 
-  @IsNumber()
-  rate: number = 4;
+  @ApiProperty()
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsInt()
+  rate: number;
 
-  @IsNumber()
-  price: number = 30000;
+  @ApiProperty()
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsInt()
+  price: number;
 
-  @IsNumber()
-  oldPrice: number = 37000;
+  @ApiProperty()
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsInt()
+  oldPrice: number;
 }
