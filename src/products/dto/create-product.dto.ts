@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsNumber, IsNumberString, IsString } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumberString,
+  IsString,
+} from 'class-validator';
 
 export class CreateProductDto {
   @ApiProperty({
@@ -37,6 +42,5 @@ export class CreateProductDto {
   @IsInt()
   oldPrice: number;
 
-  @IsNumberString()
-  category: number
+  categoryId: number;
 }

@@ -1,16 +1,16 @@
-import { ApiHideProperty } from "@nestjs/swagger";
-import { ProductEntity } from "src/products/entities/product.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ApiHideProperty } from '@nestjs/swagger';
+import { ProductEntity } from 'src/products/entities/product.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('category')
-export class CategoryEntities {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class CategoryEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @ApiHideProperty()
-    @OneToMany(() => ProductEntity, (product) => product.category)
-    products: ProductEntity[]
+  @ApiHideProperty()
+  @OneToMany(() => ProductEntity, (product) => product.category)
+  products: ProductEntity[];
 }
