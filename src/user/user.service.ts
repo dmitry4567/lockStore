@@ -4,8 +4,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEnitity } from './entities/user.entity';
-import * as argon2 from 'argon2';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
@@ -17,7 +15,8 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
   }
 
-  async findOne(email: string) {
+  async findOne(email: string) : Promise<UserEnitity> {
+    return this.userRepository.findOneBy({ email: email });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
