@@ -10,12 +10,21 @@ export class UserService {
   constructor(
     @InjectRepository(UserEnitity)
     private readonly userRepository: Repository<UserEnitity>,
-  ) {}
+  ) { }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(dto: CreateUserDto): Promise<UserEnitity> {
+    const existingUser = await this.findByEmail(dto.email);
+
+    if (existingUser) {
+      throw new BadRequestException(
+        `Пользователь с email: ${dto.email} уже существует`,
+      );
+    }
+
+    return this.userRepository.save(dto);
   }
 
-  async findOne(email: string) : Promise<UserEnitity> {
+  async findByEmail(email: string): Promise<UserEnitity> {
     return this.userRepository.findOneBy({ email: email });
   }
 
