@@ -7,6 +7,7 @@ import { CategoryModule } from './category/category.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -19,17 +20,11 @@ import { JwtModule } from '@nestjs/jwt';
       useFactory: getPostgresConfig,
       inject: [ConfigService],
     }),
-    // JwtModule.registerAsync({
-    //   imports: [ConfigModule],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     secret: configService.get<string>('JWT_SECRET'),
-    //   }),
-    //   inject: [ConfigService],
-    // }),
     ProductsModule,
     CategoryModule,
     UserModule,
     AuthModule,
+    CartModule,
   ],
   controllers: [],
   providers: [],

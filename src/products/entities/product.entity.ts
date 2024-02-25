@@ -1,9 +1,11 @@
+import { CartItem } from 'src/cart/entities/cartItem.entitiy';
 import { CategoryEntity } from 'src/category/entities/category.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -26,6 +28,9 @@ export class ProductEntity {
 
   @Column()
   oldPrice: number;
+
+  @OneToOne(() => CartItem, (cartItem) => cartItem.product)
+  cartItem: CartItem;
 
   @ManyToOne(() => CategoryEntity, (category) => category.products, {
     eager: true,

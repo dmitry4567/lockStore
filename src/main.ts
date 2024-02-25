@@ -15,6 +15,7 @@ async function bootstrap() {
       `[The source API definition (json)](http://${process.env.SERVER}:${process.env.PORT}/api-json)`,
     )
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

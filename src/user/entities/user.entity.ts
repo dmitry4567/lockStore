@@ -1,7 +1,9 @@
+import { Cart } from 'src/cart/entities/cart.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -16,6 +18,9 @@ export class UserEnitity {
 
   @Column()
   password: string;
+
+  @OneToOne(() => Cart, (cart) => cart.user)
+  cart: Cart;
 
   @CreateDateColumn()
   createAt: Date;

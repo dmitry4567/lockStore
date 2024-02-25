@@ -32,7 +32,7 @@ export class ProductsController {
   ): Promise<ProductEntity> {
     return this.productsService.create(dto, image);
   }
-
+  
   @Get()
   findAll() {
     return this.productsService.findAll();

@@ -23,6 +23,10 @@ export class ProductsService {
     });
   }
 
+  async getProductById(id: number) {
+    return await this.repository.findOneBy({ id: id });
+  }
+
   async findAll(): Promise<ProductEntity[]> {
     return this.repository.find();
   }
