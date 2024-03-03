@@ -178,4 +178,32 @@ export class CartService {
 
     return await this.cartItemRepository.delete(cartItem);
   }
+
+  async removeCart(user: any): Promise<DeleteResult> {
+    const userCart = await this.cartRepository.findOne({
+      relations: {
+        cartItems: {
+          product: true,
+        },
+      },
+      where: {
+        user: user.id,
+      },
+    });
+
+    if (!userCart) {
+      throw new NotFoundException();
+    }
+
+    await this.cartItemRepository
+      .createQueryBuilder()
+      .delete()
+      .where('cartId = :cartId', { cartId: userCart.id })
+      .execute();
+
+    userCart.cartItems = [];
+    await this.cartRepository.save(userCart);
+
+    return await this.cartRepository.delete(userCart.id);
+  }
 }

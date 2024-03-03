@@ -33,12 +33,12 @@ export class CartController {
     return await this.cartService.addProductToCart(dto, req.user);
   }
 
-  @Post(':userId')
-  async createCart(@Param('userId') userId: number): Promise<Cart> {
-    const user = new UserEnitity();
-    user.id = userId;
-    return this.cartService.createCart(user);
-  }
+  // @Post(':userId')
+  // async createCart(@Param('userId') userId: number): Promise<Cart> {
+  //   const user = new UserEnitity();
+  //   user.id = userId;
+  //   return this.cartService.createCart(user);
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get('getUserCartTotalPrice')
