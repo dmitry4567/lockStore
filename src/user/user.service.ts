@@ -42,6 +42,12 @@ export class UserService {
     return `This action updates a #${id} user`;
   }
 
+  async findById(id: number) {
+    return this.userRepository.findOneBy({
+      id,
+    });
+  }
+
   async remove(req: any): Promise<DeleteResult> {
     await this.cartService.removeCart(req.user.id);
 

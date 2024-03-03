@@ -1,27 +1,24 @@
-import { Injectable, Controller, Post, Body, Request, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Body } from '@nestjs/common';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login-dto';
-import { JwtAuthGuard } from './guards/jwt-auth-guards';
-import { ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { LocalAuthGuard } from './guards/local-auth-guards';
+import { UserEnitity } from 'src/user/entities/user.entity';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
-  async register(@Body() registerDto: LoginDto): Promise<any> {
-    return await this.authService.register(registerDto);
-  }
-
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<any> {
-    return await this.authService.login(loginDto);
+  @ApiBody({ type: CreateUserDto })
+  async login(@Request() req) {
+    return this.authService.login(req.user as UserEnitity);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req: any) {
-    return req.user;
+  @Post('/register')
+  register(@Body() dto: CreateUserDto) {
+    return this.authService.register(dto);
   }
 }
