@@ -39,6 +39,14 @@ export class CartService {
   }
 
   async addProductToCart(dto: AddProductToCartDto, user: any) {
+    const product = await this.productService.getProductById(dto.productId);
+
+    if (!product) {
+      throw new NotFoundException(
+        'There is no product with this ID: ' + dto.productId,
+      );
+    }
+
     const userCart = await this.cartRepository.findOne({
       relations: {
         cartItems: {
@@ -49,8 +57,6 @@ export class CartService {
         user: user.id,
       },
     });
-
-    const product = await this.productService.getProductById(dto.productId);
 
     userCart.cartItems.forEach((x) => x.product.title);
 
