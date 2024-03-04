@@ -1,5 +1,8 @@
 import { CartItem } from 'src/cart/entities/cartItem.entitiy';
 import { CategoryEntity } from 'src/category/entities/category.entity';
+import { ColorEntity } from 'src/color/entities/color.entity';
+import { FeatureEntity } from 'src/feature/entities/feature.entity';
+import { MaterialEntity } from 'src/material/entities/material.entity';
 import {
   Column,
   Entity,
@@ -37,4 +40,22 @@ export class ProductEntity {
   })
   @JoinColumn()
   category: CategoryEntity;
+
+  @ManyToOne(() => FeatureEntity, (feature) => feature.products, {
+    eager: true,
+  })
+  @JoinColumn()
+  feature: FeatureEntity;
+
+  @ManyToOne(() => MaterialEntity, (material) => material.products, {
+    eager: true,
+  })
+  @JoinColumn()
+  material: MaterialEntity;
+
+  @ManyToOne(() => ColorEntity, (color) => color.products, {
+    eager: true,
+  })
+  @JoinColumn()
+  color: ColorEntity;
 }

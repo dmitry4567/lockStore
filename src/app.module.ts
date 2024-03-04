@@ -6,8 +6,10 @@ import { getPostgresConfig } from './config/postgres.config';
 import { CategoryModule } from './category/category.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { JwtModule } from '@nestjs/jwt';
 import { CartModule } from './cart/cart.module';
+import { FeatureModule } from './feature/feature.module';
+import { MaterialModule } from './material/material.module';
+import { ColorModule } from './color/color.module';
 
 @Module({
   imports: [
@@ -25,6 +27,9 @@ import { CartModule } from './cart/cart.module';
     UserModule,
     AuthModule,
     CartModule,
+    FeatureModule,
+    MaterialModule,
+    ColorModule,
   ],
   controllers: [],
   providers: [],

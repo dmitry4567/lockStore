@@ -17,6 +17,7 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductEntity } from './entities/product.entity';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductSearchDto } from './dto/search-dto';
 
 @ApiTags('products')
 @Controller('products')
@@ -32,7 +33,7 @@ export class ProductsController {
   ): Promise<ProductEntity> {
     return this.productsService.create(dto, image);
   }
-  
+
   @Get()
   findAll() {
     return this.productsService.findAll();
@@ -46,6 +47,11 @@ export class ProductsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
+  }
+
+  @Post('search')
+  searchProducts(@Body() dto: ProductSearchDto): Promise<ProductEntity[]> {
+    return this.productsService.searchProducts(dto);
   }
 
   @Patch(':id')
