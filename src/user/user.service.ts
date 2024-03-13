@@ -23,13 +23,10 @@ export class UserService {
       );
     }
 
-    const user = await this.userRepository.save(dto); // Сохраняем пользователя
-
-    // Создаем корзину после регистрации
+    const user = await this.userRepository.save(dto);
     const cart = await this.cartService.createCart(user);
     user.cart = cart;
-
-    await this.userRepository.save(user); // Обновляем пользователя с корзиной
+    await this.userRepository.save(user);
 
     return user;
   }

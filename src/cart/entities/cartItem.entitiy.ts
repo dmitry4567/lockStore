@@ -16,6 +16,9 @@ import { Cart } from './cart.entity';
   
     @Column()
     Quantity: number;
+
+    @Column()
+    priceProduct: number;
   
     @OneToOne(() => ProductEntity, (product) => product.cartItem)
     @JoinColumn()

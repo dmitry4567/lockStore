@@ -63,14 +63,17 @@ export class CartService {
     if (userCart.cartItems.some((x) => x.product.id == product.id)) {
       const cItem = userCart.cartItems.find((x) => x.product.id == product.id);
       cItem.Quantity += +dto.quantity;
+      cItem.priceProduct = cItem.product.price * cItem.Quantity;
       return await this.cartItemRepository.save(cItem);
     }
 
     const cartItem = this.cartItemRepository.create({
       product: product,
       Quantity: +dto.quantity,
+      priceProduct: product.price * dto.quantity
     });
     cartItem.cart = userCart;
+    
     return await this.cartItemRepository.save(cartItem);
   }
 
