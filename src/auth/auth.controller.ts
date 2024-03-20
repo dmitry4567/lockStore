@@ -14,7 +14,7 @@ export class AuthController {
   @Post('login')
   @ApiBody({ type: CreateUserDto })
   async login(@Request() req) {
-    return this.authService.login(req.user as UserEnitity);
+    return this.authService.login(req.user);
   }
 
   @Post('/register')

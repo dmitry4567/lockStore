@@ -70,10 +70,10 @@ export class CartService {
     const cartItem = this.cartItemRepository.create({
       product: product,
       Quantity: +dto.quantity,
-      priceProduct: product.price * dto.quantity
+      priceProduct: product.price * dto.quantity,
     });
     cartItem.cart = userCart;
-    
+
     return await this.cartItemRepository.save(cartItem);
   }
 
@@ -114,6 +114,20 @@ export class CartService {
     return product;
   }
 
+  async getUserBasket(user: any) {
+    const userBasket = await this.cartRepository.findOne({
+      relations: {
+        cartItems: {
+          product: true,
+        },
+      },
+      where: {
+        user: user.id,
+      },
+    });
+    return userBasket;
+  }
+
   async UpdateProductFromCart(dto: UpdateProductToCartDto, user: any) {
     const userCart = await this.cartRepository.findOne({
       relations: {
@@ -144,9 +158,12 @@ export class CartService {
     }
 
     cartItem.Quantity = dto.quantity;
+    cartItem.priceProduct = dto.quantity * cartItem.product.price;
+
     if (cartItem.Quantity == 0) {
       return await this.cartItemRepository.remove(cartItem);
     }
+
     return await this.cartItemRepository.save(cartItem);
   }
 

@@ -10,12 +10,13 @@ import { CartModule } from './cart/cart.module';
 import { FeatureModule } from './feature/feature.module';
 import { MaterialModule } from './material/material.module';
 import { ColorModule } from './color/color.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
-      isGlobal: true
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -30,8 +31,9 @@ import { ColorModule } from './color/color.module';
     FeatureModule,
     MaterialModule,
     ColorModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

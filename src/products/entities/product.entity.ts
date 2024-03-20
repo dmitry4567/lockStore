@@ -3,11 +3,13 @@ import { CategoryEntity } from 'src/category/entities/category.entity';
 import { ColorEntity } from 'src/color/entities/color.entity';
 import { FeatureEntity } from 'src/feature/entities/feature.entity';
 import { MaterialEntity } from 'src/material/entities/material.entity';
+import { OrderItemEntity } from 'src/order/entities/order-item.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -32,9 +34,6 @@ export class ProductEntity {
   @Column()
   oldPrice: number;
 
-  @OneToOne(() => CartItem, (cartItem) => cartItem.product)
-  cartItem: CartItem;
-
   @ManyToOne(() => CategoryEntity, (category) => category.products, {
     eager: true,
   })
@@ -58,4 +57,10 @@ export class ProductEntity {
   })
   @JoinColumn()
   color: ColorEntity;
+
+  @OneToOne(() => CartItem, (cartItem) => cartItem.product)
+  cartItem: CartItem;
+
+  @OneToMany(() => OrderItemEntity, (orderItems) => orderItems.product)
+  orderItems: OrderItemEntity[];
 }
