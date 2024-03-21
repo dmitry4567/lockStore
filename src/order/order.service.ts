@@ -16,11 +16,10 @@ export class OrderService {
     private orderitemRepository: Repository<OrderItemEntity>,
     private readonly cartService: CartService,
     private readonly userService: UserService,
-  ) {}
+  ) { }
 
   async order(req: any, dto: CreateOrderDto) {
-    const user = await this.userService.findById(req.user.id);
-    const userBasket = await this.cartService.getUserBasket(user);
+    const userBasket = await this.cartService.getUserBasket(req.user);
 
     if (userBasket.cartItems.length == 0) {
       throw new BadRequestException(
@@ -32,7 +31,7 @@ export class OrderService {
       status: dto.status,
       shippingAddress: dto.shippingAddress,
       totalPrice: 0,
-      user: user,
+      user: req.user,
       orderItems: [],
     });
 
@@ -56,11 +55,10 @@ export class OrderService {
     order.orderItems.forEach((a) => (sum += a.orderPrice));
     order.totalPrice = sum;
 
-    order.user = user;
+    order.user = req.user;
     const orderNew = await this.orderRepository.save(order);
 
-    await this.cartService.removeCart(user.id);
-    await this.cartService.createCart(user);
+    await this.cartService.removeCartItems(req.user);
 
     return orderNew;
   }

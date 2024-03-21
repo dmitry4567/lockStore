@@ -46,7 +46,7 @@ export class UserService {
   }
 
   async remove(req: any): Promise<DeleteResult> {
-    await this.cartService.removeCart(req.user.id);
+    // await this.cartService.removeCart(req.user.id);
 
     return await this.userRepository.delete(req.user.id);
   }

@@ -16,7 +16,7 @@ export class CartService {
     @InjectRepository(CartItem)
     private readonly cartItemRepository: Repository<CartItem>,
     private readonly productService: ProductsService,
-  ) {}
+  ) { }
 
   async createCart(user: UserEnitity): Promise<Cart> {
     const cart = new Cart();
@@ -54,7 +54,7 @@ export class CartService {
         },
       },
       where: {
-        user: user.id,
+        user: user,
       },
     });
 
@@ -122,7 +122,7 @@ export class CartService {
         },
       },
       where: {
-        user: user.id,
+        user: user,
       },
     });
     return userBasket;
@@ -199,7 +199,7 @@ export class CartService {
     return await this.cartItemRepository.delete(cartItem);
   }
 
-  async removeCart(user: any): Promise<DeleteResult> {
+  async removeCartItems(user: any) {
     const userCart = await this.cartRepository.findOne({
       relations: {
         cartItems: {
@@ -207,7 +207,7 @@ export class CartService {
         },
       },
       where: {
-        user: user.id,
+        user: user,
       },
     });
 
@@ -222,8 +222,7 @@ export class CartService {
       .execute();
 
     userCart.cartItems = [];
-    await this.cartRepository.save(userCart);
-
-    return await this.cartRepository.delete(userCart.id);
+    
+    return await this.cartRepository.save(userCart);
   }
 }
