@@ -7,6 +7,7 @@ import {
   OneToOne,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
 } from 'typeorm';
 import { OrderItemEntity } from './order-item.entity';
 import { UserEnitity } from 'src/user/entities/user.entity';
@@ -24,9 +25,8 @@ export class Order {
 
   @Column()
   totalPrice: number;
-
-  @OneToMany(() => UserEnitity, (user) => user.order)
-  @JoinColumn()
+  
+  @ManyToOne(() => UserEnitity, (user) => user.orders) 
   user: UserEnitity;
 
   @OneToMany(() => OrderItemEntity, (orderItems) => orderItems.order)

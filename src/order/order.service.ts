@@ -42,7 +42,6 @@ export class OrderService {
       if (userBasket.cartItems[i] && userBasket.cartItems[i].product) {
         const orderItem = this.orderitemRepository.create({
           product: userBasket.cartItems[i].product,
-          // order: order,
         });
         orderItem.orderPrice = userBasket.cartItems[i].priceProduct;
         await this.orderitemRepository.save(orderItem);
@@ -57,12 +56,13 @@ export class OrderService {
     order.orderItems.forEach((a) => (sum += a.orderPrice));
     order.totalPrice = sum;
 
-    user.order = order;
+    order.user = user;
+    const orderNew = await this.orderRepository.save(order);
 
     await this.cartService.removeCart(user.id);
     await this.cartService.createCart(user);
 
-    return await this.orderRepository.save(order);
+    return orderNew;
   }
 
   async getOrdersUser(req: any) {
@@ -73,7 +73,7 @@ export class OrderService {
         },
       },
       where: {
-        user: req.user.id,
+        user: req.user,
       },
     });
     return userOrder;

@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -24,8 +25,8 @@ export class UserEnitity {
   @OneToOne(() => Cart, (cart) => cart.user)
   cart: Cart;
 
-  @ManyToOne(() => Order, (order) => order.user)
-  order: Order;
+  @OneToMany(() => Order, (order) => order.user) // Changed to @OneToMany
+  orders: Order[]; // Renamed to 'orders' for clarity
 
   @CreateDateColumn()
   createAt: Date;
