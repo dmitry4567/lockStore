@@ -58,8 +58,8 @@ export class ProductEntity {
   @JoinColumn()
   color: ColorEntity;
 
-  @OneToOne(() => CartItem, (cartItem) => cartItem.product)
-  cartItem: CartItem;
+  @OneToMany(() => CartItem, (cartItem) => cartItem.product)
+  cartItem: CartItem[];
 
   @OneToMany(() => OrderItemEntity, (orderItems) => orderItems.product)
   orderItems: OrderItemEntity[];
