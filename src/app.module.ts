@@ -11,6 +11,7 @@ import { FeatureModule } from './feature/feature.module';
 import { MaterialModule } from './material/material.module';
 import { ColorModule } from './color/color.module';
 import { OrderModule } from './order/order.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { OrderModule } from './order/order.module';
     MaterialModule,
     ColorModule,
     OrderModule,
+    RoleModule,
   ],
   controllers: [],
   providers: [],

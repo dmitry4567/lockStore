@@ -27,7 +27,7 @@ export class AuthService {
       const userData = await this.usersService.create(dto);
 
       return {
-        token: this.jwtService.sign({ id: userData.id }),
+        token: this.jwtService.sign({ id: userData.id, role: userData.role }),
       };
     } catch (err) {
       console.log(err);
@@ -37,7 +37,7 @@ export class AuthService {
 
   async login(user: UserEnitity) {
     return {
-      token: this.jwtService.sign({ id: user.id }),
+      token: this.jwtService.sign({ id: user.id, role: user.role }),
     };
   }
 }

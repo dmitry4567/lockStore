@@ -9,8 +9,9 @@ import {
   UseInterceptors,
   UploadedFile,
   Res,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiConsumes } from '@nestjs/swagger';
+import { ApiTags, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { fileStorage } from './storage';
 import { ProductsService } from './products.service';
@@ -18,9 +19,15 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { ProductEntity } from './entities/product.entity';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductSearchDto } from './dto/search-dto';
+import { Roles } from 'src/decorators/role.decorator';
+import { Role } from 'src/role/entities/role.entity';
+import { RolesGuard } from 'src/auth/guards/roles.guards';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guards';
 
 @ApiTags('products')
 @Controller('products')
+@ApiBearerAuth()
+@Controller('cart')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
@@ -34,6 +41,8 @@ export class ProductsController {
     return this.productsService.create(dto, image);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Get()
   findAll() {
     return this.productsService.findAll();
