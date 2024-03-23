@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -17,12 +18,10 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
+    if (!user) throw new BadRequestException('Пользователя с таким email нет');
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException();
-    }
+    if (!isPasswordValid) throw new UnauthorizedException();
 
     if (user && isPasswordValid) {
       const { password, ...result } = user;
