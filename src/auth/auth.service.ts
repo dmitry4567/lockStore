@@ -1,8 +1,12 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserEnitity } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +18,13 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
 
-    if (user && user.password === password) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException();
+    }
+
+    if (user && isPasswordValid) {
       const { password, ...result } = user;
       return result;
     }
@@ -23,16 +33,11 @@ export class AuthService {
   }
 
   async register(dto: CreateUserDto) {
-    try {
-      const userData = await this.usersService.create(dto);
+    const userData = await this.usersService.create(dto);
 
-      return {
-        token: this.jwtService.sign({ id: userData.id, role: userData.role }),
-      };
-    } catch (err) {
-      console.log(err);
-      throw new ForbiddenException('Ошибка при регистрации');
-    }
+    return {
+      token: this.jwtService.sign({ id: userData.id, role: userData.role }),
+    };
   }
 
   async login(user: UserEnitity) {

@@ -6,15 +6,20 @@ import { DeleteResult, Repository } from 'typeorm';
 import { UserEnitity } from './entities/user.entity';
 import { CartService } from 'src/cart/cart.service';
 import { RoleService } from 'src/role/role.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
+  private readonly hashSaltRounds: number;
+
   constructor(
     @InjectRepository(UserEnitity)
     private readonly userRepository: Repository<UserEnitity>,
     private readonly cartService: CartService,
     private readonly roleService: RoleService,
-  ) {}
+  ) {
+    this.hashSaltRounds = parseInt(process.env.HASH_SALT_ROUNDS);
+  }
 
   async create(dto: CreateUserDto): Promise<UserEnitity> {
     const existingUser = await this.findByEmail(dto.email);
@@ -25,9 +30,14 @@ export class UserService {
       );
     }
 
-    const user = await this.userRepository.save(dto);
-    const cart = await this.cartService.createCart(user);
+    const hashedPassword = await bcrypt.hash(dto.password, this.hashSaltRounds);
 
+    const user = await this.userRepository.save({
+      email: dto.email,
+      password: hashedPassword,
+    });
+
+    const cart = await this.cartService.createCart(user);
     user.cart = cart;
 
     const role = await this.roleService.getRoleByValue('admin');
