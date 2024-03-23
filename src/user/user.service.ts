@@ -40,8 +40,7 @@ export class UserService {
     const cart = await this.cartService.createCart(user);
     user.cart = cart;
 
-    const role = await this.roleService.getRoleByValue('admin');
-    console.log(role);
+    const role = await this.roleService.getRoleByValue('user');
     user.role = role;
 
     await this.userRepository.save(user);
@@ -50,7 +49,16 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<UserEnitity> {
-    return this.userRepository.findOneBy({ email: email });
+    const user = await this.userRepository.findOne({
+      relations: {
+        role: true,
+      },
+      where: {
+        email: email,
+      },
+    });
+
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

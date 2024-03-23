@@ -50,15 +50,12 @@ export class RolesGuard implements CanActivate {
 
       req.user = user;
 
-      console.log(user);
-
       if (user.role.value) {
         return user.role.value === requiredRole;
       } else {
         return false;
       }
     } catch (e) {
-      console.log(e);
       throw new HttpException('Нет доступа', HttpStatus.FORBIDDEN);
     }
   }
