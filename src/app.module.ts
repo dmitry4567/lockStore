@@ -12,6 +12,7 @@ import { MaterialModule } from './material/material.module';
 import { ColorModule } from './color/color.module';
 import { OrderModule } from './order/order.module';
 import { RoleModule } from './role/role.module';
+import { WholeSaleModule } from './whole-sale/whole-sale.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { RoleModule } from './role/role.module';
     ColorModule,
     OrderModule,
     RoleModule,
+    WholeSaleModule,
   ],
   controllers: [],
   providers: [],

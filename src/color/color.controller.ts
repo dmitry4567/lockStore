@@ -9,8 +9,8 @@ import { RolesGuard } from 'src/auth/guards/roles.guards';
 @Roles('admin')
 @UseGuards(RolesGuard)
 @ApiBearerAuth()
-@ApiTags('feature')
-@Controller('feature')
+@ApiTags('COLOR')
+@Controller('color')
 export class ColorController {
   constructor(private readonly colorService: ColorService) {}
 

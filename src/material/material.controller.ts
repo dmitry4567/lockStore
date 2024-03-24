@@ -18,7 +18,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guards';
 @Roles('admin')
 @UseGuards(RolesGuard)
 @ApiBearerAuth()
-@ApiTags('FEATURE')
+@ApiTags('MATERIAL')
 @Controller('material')
 export class MaterialController {
   constructor(private readonly materialService: MaterialService) {}

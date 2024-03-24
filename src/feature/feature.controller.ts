@@ -9,7 +9,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guards';
 @Roles('admin')
 @UseGuards(RolesGuard)
 @ApiBearerAuth()
-@ApiTags('feature')
+@ApiTags('FEATURE')
 @Controller('feature')
 export class FeatureController {
   constructor(private readonly featureService: FeatureService) {}
