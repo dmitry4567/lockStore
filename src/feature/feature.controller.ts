@@ -1,9 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { FeatureService } from './feature.service';
 import { CreateFeatureDto } from './dto/create-feature.dto';
 import { UpdateFeatureDto } from './dto/update-feature.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/decorators/role.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guards';
 
+@Roles('admin')
+@UseGuards(RolesGuard)
+@ApiBearerAuth()
 @ApiTags('feature')
 @Controller('feature')
 export class FeatureController {

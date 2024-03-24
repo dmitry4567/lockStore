@@ -24,13 +24,14 @@ import { Role } from 'src/role/entities/role.entity';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guards';
 
-@ApiTags('products')
+@ApiTags('PRODUCTS')
 @Controller('products')
 @ApiBearerAuth()
-@Controller('cart')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image', { storage: fileStorage }))
@@ -63,6 +64,8 @@ export class ProductsController {
     return this.productsService.searchProducts(dto);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Patch(':id')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image', { storage: fileStorage }))
@@ -74,6 +77,8 @@ export class ProductsController {
     return this.productsService.update(+id, dto, image);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productsService.delete(+id);

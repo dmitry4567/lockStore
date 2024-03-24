@@ -16,9 +16,6 @@ export class Role {
   @Column({ unique: true, nullable: false })
   value: string;
 
-  @Column({ nullable: false })
-  description: string;
-
   @OneToMany(() => UserEnitity, (user) => user.role)
   @JoinColumn()
   user: UserEnitity;

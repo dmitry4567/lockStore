@@ -6,12 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/decorators/role.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guards';
 
+@Roles('admin')
+@UseGuards(RolesGuard)
+@ApiBearerAuth()
 @ApiTags('category')
 @Controller('category')
 export class CategoryController {
