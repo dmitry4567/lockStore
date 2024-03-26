@@ -25,9 +25,9 @@ export class UserController {
   //   return this.userService.create(createUserDto);
   // }
 
-  @UseGuards(JwtAuthGuard)
-  @Delete()
-  delete(@Request() req: any): Promise<DeleteResult> {
-    return this.userService.remove(req);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Delete()
+  // delete(@Request() req: any): Promise<DeleteResult> {
+  //   return this.userService.remove(req);
+  // }
 }
