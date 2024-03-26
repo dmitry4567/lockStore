@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ColorEntity } from './entities/color.entity';
 import { UpdateColorDto } from './dto/update-color.dto';
 import { CreateFeatureDto } from 'src/feature/dto/create-feature.dto';
+import { CreateColorDto } from './dto/create-color.dto';
 
 @Injectable()
 export class ColorService {
@@ -12,7 +13,7 @@ export class ColorService {
     private colorEntity: Repository<ColorEntity>,
   ) { }
 
-  create(dto: CreateFeatureDto) {
+  create(dto: CreateColorDto) {
     return this.colorEntity.save(dto);
   }
 
@@ -21,14 +22,21 @@ export class ColorService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} category`;
+    return this.colorEntity.findOneBy({ id });
   }
 
-  update(id: number, updateCategoryDto: UpdateColorDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, dto: UpdateColorDto) {
+    const toUpdate = await this.colorEntity.findOneBy({ id });
+    if (!toUpdate) {
+      throw new BadRequestException(`Запись с id=${id} не найдена`);
+    }
+    if (dto.name) {
+      toUpdate.name = dto.name;
+    }
+    return this.colorEntity.save(toUpdate);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} category`;
+    return this.colorEntity.delete(id);
   }
 }

@@ -14,5 +14,6 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   controllers: [MaterialController],
   providers: [MaterialService],
+  exports: [MaterialService]
 })
 export class MaterialModule {}

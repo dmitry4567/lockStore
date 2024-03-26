@@ -18,7 +18,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guards';
 @Roles('admin')
 @UseGuards(RolesGuard)
 @ApiBearerAuth()
-@ApiTags('category')
+@ApiTags('CATEGORY')
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}

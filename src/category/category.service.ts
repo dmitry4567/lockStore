@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryEntity } from './entities/category.entity';
@@ -10,7 +10,7 @@ export class CategoryService {
   constructor(
     @InjectRepository(CategoryEntity)
     private repository: Repository<CategoryEntity>,
-  ) { }
+  ) {}
 
   create(dto: CreateCategoryDto) {
     return this.repository.save(dto);
@@ -21,14 +21,21 @@ export class CategoryService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} category`;
+    return this.repository.findOneBy({ id });
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, dto: UpdateCategoryDto) {
+    const toUpdate = await this.repository.findOneBy({ id });
+    if (!toUpdate) {
+      throw new BadRequestException(`Запись с id=${id} не найдена`);
+    }
+    if (dto.name) {
+      toUpdate.name = dto.name;
+    }
+    return this.repository.save(toUpdate);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} category`;
+    return this.repository.delete(id);
   }
 }

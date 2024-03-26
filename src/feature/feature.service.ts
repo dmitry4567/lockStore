@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateFeatureDto } from './dto/create-feature.dto';
 import { UpdateFeatureDto } from './dto/update-feature.dto';
 import { FeatureEntity } from './entities/feature.entity';
@@ -10,7 +10,7 @@ export class FeatureService {
   constructor(
     @InjectRepository(FeatureEntity)
     private featureEntity: Repository<FeatureEntity>,
-  ) { }
+  ) {}
 
   create(dto: CreateFeatureDto) {
     return this.featureEntity.save(dto);
@@ -21,14 +21,21 @@ export class FeatureService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} category`;
+    return this.featureEntity.findOneBy({ id });
   }
 
-  update(id: number, updateCategoryDto: UpdateFeatureDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, dto: UpdateFeatureDto) {
+    const toUpdate = await this.featureEntity.findOneBy({ id });
+    if (!toUpdate) {
+      throw new BadRequestException(`Запись с id=${id} не найдена`);
+    }
+    if (dto.name) {
+      toUpdate.name = dto.name;
+    }
+    return this.featureEntity.save(toUpdate);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} category`;
+    return this.featureEntity.delete(id);
   }
 }

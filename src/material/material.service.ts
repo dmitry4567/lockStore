@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MaterialEntity } from './entities/material.entity';
@@ -12,6 +12,7 @@ export class MaterialService {
     private materialEntity: Repository<MaterialEntity>,
   ) { }
 
+
   create(dto: CreateMaterialDto) {
     return this.materialEntity.save(dto);
   }
@@ -21,14 +22,21 @@ export class MaterialService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} category`;
+    return this.materialEntity.findOneBy({ id });
   }
 
-  update(id: number, updateCategoryDto: UpdateMaterialDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, dto: UpdateMaterialDto) {
+    const toUpdate = await this.materialEntity.findOneBy({ id });
+    if (!toUpdate) {
+      throw new BadRequestException(`Запись с id=${id} не найдена`);
+    }
+    if (dto.name) {
+      toUpdate.name = dto.name;
+    }
+    return this.materialEntity.save(toUpdate);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} category`;
+    return this.materialEntity.delete(id);
   }
 }

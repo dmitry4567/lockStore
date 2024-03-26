@@ -8,12 +8,18 @@ import { CategoryEntity } from 'src/category/entities/category.entity';
 import { CategoryModule } from 'src/category/category.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PhotoItem } from '../photo-item/entities/photoItem.entity';
+import { FeatureModule } from 'src/feature/feature.module';
+import { MaterialModule } from 'src/material/material.module';
+import { ColorModule } from 'src/color/color.module';
 
 @Module({
   imports: [
     ConfigModule,
     TypeOrmModule.forFeature([ProductEntity, PhotoItem, CategoryEntity]),
     CategoryModule,
+    FeatureModule,
+    MaterialModule,
+    ColorModule,
     JwtModule,
   ],
   controllers: [ProductsController],

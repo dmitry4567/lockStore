@@ -41,11 +41,6 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
-  @Get('/image/:path')
-  download(@Param('path') path: string, @Res() response) {
-    return response.sendFile(path, { root: './db_images/photoProduct' });
-  }
-
   @Get(':id')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)

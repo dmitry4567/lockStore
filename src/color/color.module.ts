@@ -10,5 +10,6 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [ConfigModule, TypeOrmModule.forFeature([ColorEntity]), JwtModule],
   controllers: [ColorController],
   providers: [ColorService],
+  exports: [ColorService],
 })
 export class ColorModule {}

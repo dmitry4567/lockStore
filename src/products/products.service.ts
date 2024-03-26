@@ -1,13 +1,9 @@
 import {
-  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
   NotFoundException,
-  Query,
-  UploadedFiles,
 } from '@nestjs/common';
-import { AddPhotosToProductDto } from '../photo-item/dto/add-photo-to-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
@@ -16,7 +12,10 @@ import * as fs from 'fs';
 import { ProductSearchDto } from './dto/search-dto';
 import { PhotoItem } from '../photo-item/entities/photoItem.entity';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UpdatePhotosToProductDto } from '../photo-item/dto/update-photos-to-product.dto';
+import { CategoryService } from 'src/category/category.service';
+import { FeatureService } from 'src/feature/feature.service';
+import { ColorService } from 'src/color/color.service';
+import { MaterialService } from 'src/material/material.service';
 
 @Injectable()
 export class ProductsService {
@@ -25,15 +24,31 @@ export class ProductsService {
     private repository: Repository<ProductEntity>,
     @InjectRepository(PhotoItem)
     private repository2: Repository<PhotoItem>,
+    private readonly categoryService: CategoryService,
+    private readonly featureService: FeatureService,
+    private readonly colorService: ColorService,
+    private readonly materialService: MaterialService,
   ) {}
 
   async create(dto: CreateProductDto) {
-    return this.repository.save({
-      title: dto.title,
-      rate: dto.rate,
-      price: dto.price,
-      oldPrice: dto.oldPrice,
-    });
+    const category = await this.categoryService.findOne(dto.categoryId);
+    const feature = await this.featureService.findOne(dto.featureId);
+    const color = await this.colorService.findOne(dto.colorId);
+    const material = await this.materialService.findOne(dto.materialId);
+
+    const product = new ProductEntity();
+    product.title = dto.title;
+    product.rate = dto.rate;
+    product.price = dto.price;
+    product.oldPrice = dto.oldPrice;
+    product.category = category;
+    product.feature = feature;
+    product.color = color;
+    product.material = material;
+
+    await this.repository.save(product);
+
+    return product;
   }
 
   async getProductById(id: number) {
@@ -149,6 +164,5 @@ export class ProductsService {
     await this.repository.save(product);
 
     return this.repository.delete({ id });
-
   }
 }

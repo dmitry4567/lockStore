@@ -26,5 +26,15 @@ export class CreateProductDto {
   @IsInt()
   oldPrice: number;
 
+  @ApiProperty()
   categoryId: number;
+
+  @ApiProperty()
+  colorId: number;
+
+  @ApiProperty()
+  featureId: number;
+
+  @ApiProperty()
+  materialId: number;
 }

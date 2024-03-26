@@ -63,5 +63,4 @@ export class ProductEntity {
 
   @OneToMany(() => PhotoItem, (photoItem) => photoItem.product)
   photoItems: PhotoItem[];
-  image: any;
 }

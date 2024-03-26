@@ -14,5 +14,6 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   controllers: [CategoryController],
   providers: [CategoryService],
+  exports: [CategoryService],
 })
 export class CategoryModule {}
