@@ -28,14 +28,14 @@ async function bootstrap() {
   const port = parseInt(process.env.PORT);
   const server = process.env.SERVER;
 
-  createUserAndRoles(app);
+  init(app);
 
   await app.listen(port, server);
 
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
-async function createUserAndRoles(app: INestApplication<any>) {
+async function init(app: INestApplication<any>) {
   const rolesRepository = app.get<Repository<Role>>(getRepositoryToken(Role));
   const existingRoles = await rolesRepository.find();
 
@@ -52,9 +52,9 @@ async function createUserAndRoles(app: INestApplication<any>) {
       getRepositoryToken(UserEnitity),
     );
     const adminEntity = new UserEnitity();
-    adminEntity.email = 'admin@gmail.com';
+    adminEntity.email = process.env.EMAIL_ADMIN;
     const hashedPassword = await bcrypt.hash(
-      '12345678',
+      process.env.PASSWORD_ADMIN,
       Number(process.env.HASH_SALT_ROUNDS),
     );
     adminEntity.password = hashedPassword;
