@@ -12,7 +12,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { PhotoItem } from './photoItem.entity';
+import { PhotoItem } from '../../photo-item/entities/photoItem.entity';
 
 @Entity('products')
 export class ProductEntity {

@@ -7,16 +7,16 @@ import {
   Query,
   UploadedFiles,
 } from '@nestjs/common';
-import { AddPhotosToProductDto } from './dto/add-photo-to-product.dto';
+import { AddPhotosToProductDto } from '../photo-item/dto/add-photo-to-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { ProductEntity } from './entities/product.entity';
 import * as fs from 'fs';
 import { ProductSearchDto } from './dto/search-dto';
-import { PhotoItem } from './entities/photoItem.entity';
+import { PhotoItem } from '../photo-item/entities/photoItem.entity';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UpdatePhotosToProductDto } from './dto/update-photos-to-product.dto';
+import { UpdatePhotosToProductDto } from '../photo-item/dto/update-photos-to-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -34,34 +34,6 @@ export class ProductsService {
       price: dto.price,
       oldPrice: dto.oldPrice,
     });
-  }
-
-  async uploadPhotos(
-    dto: AddPhotosToProductDto,
-    photos: Express.Multer.File[],
-  ) {
-    const product = await this.repository.findOne({
-      relations: {
-        photoItems: true,
-      },
-      where: {
-        id: dto.productId,
-      },
-    });
-
-    if (!product) {
-      throw new BadRequestException('Product no found');
-    }
-
-    const photoEntities = photos.map((photo) => {
-      const photoEntity = new PhotoItem();
-
-      photoEntity.fileName = photo.filename;
-      photoEntity.product = product;
-      return photoEntity;
-    });
-
-    return await this.repository2.save(photoEntities);
   }
 
   async getProductById(id: number) {
@@ -108,39 +80,6 @@ export class ProductsService {
       }
     });
     return this.repository.save(toUpdate);
-  }
-
-  async updatePhotosToProduct(
-    id: number,
-    dto: UpdatePhotosToProductDto,
-    photos: Express.Multer.File[],
-  ) {
-    const toUpdate = await this.findOne(id);
-    if (photos) {
-      for (let i = 0; i < toUpdate.photoItems.length; i++) {
-        fs.unlink(
-          `db_images/photoProduct/${toUpdate.photoItems[i].fileName}`,
-          (err) => {
-            if (err) {
-              console.error(err);
-            }
-          },
-        );
-        await this.repository2.delete({ id: toUpdate.photoItems[i].id });
-      }
-
-      const photoEntities = photos.map((photo) => {
-        const photoEntity = new PhotoItem();
-
-        photoEntity.fileName = photo.filename;
-        photoEntity.product = toUpdate;
-        return photoEntity;
-      });
-
-      await this.repository2.save(photoEntities);
-
-      throw new HttpException('Фотограции обновлены', HttpStatus.OK);
-    }
   }
 
   async searchProducts(data: ProductSearchDto): Promise<ProductEntity[]> {
