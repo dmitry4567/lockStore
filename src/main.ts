@@ -62,7 +62,7 @@ async function createUserAndRoles(app: INestApplication<any>) {
 
     await userRepository.save(adminEntity);
 
-    console.log('Initial user has been created.');
+    console.log('Admin has been created.');
   }
 }
 

@@ -7,11 +7,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryEntity } from 'src/category/entities/category.entity';
 import { CategoryModule } from 'src/category/category.module';
 import { JwtModule } from '@nestjs/jwt';
+import { PhotoItem } from './entities/photoItem.entity';
 
 @Module({
   imports: [
     ConfigModule,
-    TypeOrmModule.forFeature([ProductEntity, CategoryEntity]),
+    TypeOrmModule.forFeature([ProductEntity, PhotoItem, CategoryEntity]),
     CategoryModule,
     JwtModule,
   ],

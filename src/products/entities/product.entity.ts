@@ -10,17 +10,14 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { PhotoItem } from './photoItem.entity';
 
 @Entity('products')
 export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  image: string;
 
   @Column()
   title: string;
@@ -63,4 +60,8 @@ export class ProductEntity {
 
   @OneToMany(() => OrderItemEntity, (orderItems) => orderItems.product)
   orderItems: OrderItemEntity[];
+
+  @OneToMany(() => PhotoItem, (photoItem) => photoItem.product)
+  photoItems: PhotoItem[];
+  image: any;
 }
