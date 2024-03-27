@@ -7,15 +7,15 @@ import { Roles } from 'src/decorators/role.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guards';
 
-@Roles('admin')
-@UseGuards(RolesGuard)
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 @ApiTags('FEATURE')
 @Controller('feature')
 export class FeatureController {
-  constructor(private readonly featureService: FeatureService) {}
+  constructor(private readonly featureService: FeatureService) { }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
   create(@Body() createFeatureDto: CreateFeatureDto) {
     return this.featureService.create(createFeatureDto);
@@ -31,11 +31,19 @@ export class FeatureController {
     return this.featureService.findOne(+id);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFeatureDto: UpdateFeatureDto) {
     return this.featureService.update(+id, updateFeatureDto);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.featureService.remove(+id);

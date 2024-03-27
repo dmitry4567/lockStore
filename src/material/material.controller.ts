@@ -16,15 +16,15 @@ import { Roles } from 'src/decorators/role.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guards';
 
-@Roles('admin')
-@UseGuards(RolesGuard)
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 @ApiTags('MATERIAL')
 @Controller('material')
 export class MaterialController {
-  constructor(private readonly materialService: MaterialService) {}
+  constructor(private readonly materialService: MaterialService) { }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
   create(@Body() createFeatureDto: CreateMaterialDto) {
     return this.materialService.create(createFeatureDto);
@@ -40,11 +40,19 @@ export class MaterialController {
     return this.materialService.findOne(+id);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFeatureDto: UpdateMaterialDto) {
     return this.materialService.update(+id, updateFeatureDto);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.materialService.remove(+id);
