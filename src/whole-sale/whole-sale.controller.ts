@@ -16,12 +16,10 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guards';
 import { UpdateWholeSaleDto } from './dto/update-whole-sale.dto copy';
 
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 @ApiTags('WHOLESALE')
 @Controller('wholesale')
 export class WholeSaleController {
-  constructor(private readonly wholeSaleService: WholeSaleService) {}
+  constructor(private readonly wholeSaleService: WholeSaleService) { }
 
   @Post()
   create(@Body() createWholeSaleDto: CreateWholeSaleDto) {
@@ -30,6 +28,8 @@ export class WholeSaleController {
 
   @Roles('admin')
   @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get()
   findAll() {
     return this.wholeSaleService.findAll();
@@ -37,6 +37,8 @@ export class WholeSaleController {
 
   @Roles('admin')
   @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.wholeSaleService.findOne(+id);
@@ -44,6 +46,8 @@ export class WholeSaleController {
 
   @Roles('admin')
   @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -54,6 +58,8 @@ export class WholeSaleController {
 
   @Roles('admin')
   @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.wholeSaleService.remove(+id);
