@@ -33,17 +33,11 @@ export class ProductsController {
     return this.productsService.create(dto);
   }
 
-  @Roles('admin')
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.productsService.findAll();
   }
 
-  @Get(':id')
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
   }

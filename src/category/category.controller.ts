@@ -14,9 +14,11 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/role.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guards';
 
 @Roles('admin')
 @UseGuards(RolesGuard)
+@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiTags('CATEGORY')
 @Controller('category')

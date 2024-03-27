@@ -14,9 +14,11 @@ import { UpdateMaterialDto } from './dto/update-material.dto';
 import { MaterialService } from './material.service';
 import { Roles } from 'src/decorators/role.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guards';
 
 @Roles('admin')
 @UseGuards(RolesGuard)
+@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiTags('MATERIAL')
 @Controller('material')
