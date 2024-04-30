@@ -22,13 +22,13 @@ import { UpdatePhotosToProductDto } from './dto/update-photos-to-product.dto';
 
 @ApiTags('PHOTO_ITEM')
 @Controller('photoItem')
-@ApiBearerAuth()
 export class PhotoItemController {
   constructor(private readonly photoItemService: PhotoItemService) {}
 
   @Roles('admin')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post('/upload-photos/:id')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('photos', 20, { storage: fileStorage }))
@@ -52,6 +52,7 @@ export class PhotoItemController {
   @Roles('admin')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch('updatePhotosToProduct/:id')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('photos', 20, { storage: fileStorage }))
@@ -66,6 +67,7 @@ export class PhotoItemController {
   @Roles('admin')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.photoItemService.delete(+id);

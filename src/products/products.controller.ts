@@ -21,13 +21,13 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guards';
 
 @ApiTags('PRODUCTS')
 @Controller('products')
-@ApiBearerAuth()
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Roles('admin')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post('addProduct')
   create(@Body() dto: CreateProductDto) {
     return this.productsService.create(dto);
@@ -51,6 +51,7 @@ export class ProductsController {
   @Roles('admin')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch('updateProduct/:id')
   updateProduct(
     @Param('id') id: string,
@@ -59,10 +60,10 @@ export class ProductsController {
     return this.productsService.update(+id, dto);
   }
 
-
   @Roles('admin')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productsService.delete(+id);

@@ -16,15 +16,15 @@ import { Roles } from 'src/decorators/role.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth-guards';
 
-@Roles('admin')
-@UseGuards(RolesGuard)
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 @ApiTags('CATEGORY')
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) { }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
@@ -40,6 +40,10 @@ export class CategoryController {
     return this.categoryService.findOne(+id);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -48,6 +52,10 @@ export class CategoryController {
     return this.categoryService.update(+id, updateCategoryDto);
   }
 
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);
