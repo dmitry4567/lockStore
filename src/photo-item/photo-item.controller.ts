@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Response,
   UploadedFiles,
   UseInterceptors,
   UseGuards,
@@ -37,6 +38,11 @@ export class PhotoItemController {
     @UploadedFiles() photos: Express.Multer.File[],
   ) {
     return this.photoItemService.uploadPhotos(dto, photos);
+  }
+
+  @Get('/product/:path')
+  download(@Param('path') path: string, @Response() response) {
+    return response.sendFile(path, { root: './db_images/photoProduct' });
   }
 
   @Get()
