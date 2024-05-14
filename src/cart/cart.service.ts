@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserEnitity } from 'src/user/entities/user.entity';
 import { Cart } from './entities/cart.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,7 +21,7 @@ export class CartService {
     @InjectRepository(CartItem)
     private readonly cartItemRepository: Repository<CartItem>,
     private readonly productService: ProductsService,
-  ) { }
+  ) {}
 
   async createCart(user: UserEnitity): Promise<Cart> {
     const cart = new Cart();
@@ -90,7 +95,12 @@ export class CartService {
         user: user.id,
       },
     });
-    return userCart.cartItems;
+
+    const data = userCart.cartItems;
+
+    const totalPrice = await this.getUserCartTotalPrice(user.id);
+
+    throw new HttpException({ totalPrice, data }, HttpStatus.OK);
   }
 
   async findOne(productId: number, user: any) {
@@ -166,7 +176,11 @@ export class CartService {
       return await this.cartItemRepository.remove(cartItem);
     }
 
-    return await this.cartItemRepository.save(cartItem);
+    const data = await this.cartItemRepository.save(cartItem);
+
+    const updateTotalPrice = await this.getUserCartTotalPrice(user.id);
+
+    throw new HttpException({ updateTotalPrice, data }, HttpStatus.OK);
   }
 
   async remove(productId: number, user: any): Promise<DeleteResult> {
@@ -224,7 +238,7 @@ export class CartService {
       .execute();
 
     userCart.cartItems = [];
-    
+
     return await this.cartRepository.save(userCart);
   }
 }
