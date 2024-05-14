@@ -81,7 +81,9 @@ export class CartService {
     const userCart = await this.cartRepository.findOne({
       relations: {
         cartItems: {
-          product: true,
+          product: {
+            photoItems: true,
+          },
         },
       },
       where: {
