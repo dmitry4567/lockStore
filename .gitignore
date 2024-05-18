@@ -2,6 +2,7 @@
 # .env
 ngrok.exe
 /db_images
+Dockerfile
 
 /dist
 /node_modules
